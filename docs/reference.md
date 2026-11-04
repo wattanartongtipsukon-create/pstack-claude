@@ -96,7 +96,7 @@ Keep all skill directories, including the principle references. Leave the clone 
 
 If a destination already exists, inspect it before replacing it. The installation skips existing files, directories, and links.
 
-To update, run `git pull` in the clone that the links point to, then run the install loop again. A pull updates skills that are already linked but does not link new skill directories. To uninstall a linked skill, remove its link at `~/.agents/skills/<name>`. This removes it from every runtime using that directory.
+To update, run `git pull` in the clone that the links point to, then run the install loop again. A pull updates skills that are already linked but does not link new skill directories. A pull that removes or renames a skill leaves a dead link behind. From the clone's root, `find ~/.agents/skills -maxdepth 1 -xtype l -lname "$(pwd)/*" -delete` removes only the dead links that point into this clone. To uninstall a linked skill, remove its link at `~/.agents/skills/<name>`. This removes it from every runtime using that directory.
 
 ### Install with the skills CLI
 
