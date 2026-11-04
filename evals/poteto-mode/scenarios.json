@@ -1,0 +1,38 @@
+{
+  "skills": ["poteto-mode"],
+  "fixture": "fixture",
+  "scenarios": [
+    {
+      "id": "bug-routes-to-bug-fix",
+      "query": "paginate() in src/paginate.js drops the last partial page: 5 items with size 2 gives 2 pages, not 3. Please fix it.",
+      "expected_behavior": [
+        "Opens the Bug fix playbook before editing code",
+        "Reproduces the dropped page before changing paginate()",
+        "Leaves paginate() returning 3 pages for 5 items of size 2"
+      ],
+      "expect_reads": ["skills/poteto-mode/playbooks/bug-fix.md"],
+      "expect_no_reads": ["skills/poteto-mode/playbooks/feature.md"]
+    },
+    {
+      "id": "question-routes-to-investigation",
+      "query": "How does paginate() in src/paginate.js decide how many pages to return? Just explain, don't change anything.",
+      "expected_behavior": [
+        "Opens the Investigation playbook",
+        "Cites the Math.floor line in src/paginate.js",
+        "Edits no file"
+      ],
+      "expect_reads": ["skills/poteto-mode/playbooks/investigation.md"],
+      "expect_no_tools": ["Edit", "Write", "MultiEdit", "NotebookEdit"]
+    },
+    {
+      "id": "rename-routes-to-refactoring",
+      "query": "Rename paginate to pageItems in src/paginate.js. Behavior must stay exactly the same.",
+      "expected_behavior": [
+        "Opens the Refactoring playbook",
+        "Renames the export without touching the page arithmetic"
+      ],
+      "expect_reads": ["skills/poteto-mode/playbooks/refactoring.md"],
+      "expect_no_reads": ["skills/poteto-mode/playbooks/bug-fix.md"]
+    }
+  ]
+}
