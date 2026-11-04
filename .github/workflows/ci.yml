@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install the copy of Pi the tests load
@@ -44,7 +44,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install --frozen-lockfile
       # The runner's first Windows PowerShell launch takes from 2.5 s to over
@@ -71,7 +71,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install the copy of Pi the tests load
@@ -90,7 +90,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install --frozen-lockfile
       # A dry-run sync to the SHA already pinned compares the port with
@@ -167,7 +167,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       # The extension's types and model catalog come from the installed Pi
       # package, so the checks run against the release users have rather than
       # a copy in bun.lock. No lockfile: the exact version is pinned, and
@@ -206,7 +206,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Typecheck
@@ -262,7 +262,7 @@ jobs:
           package-manager-cache: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install --frozen-lockfile
       # TLC_TOOL in run.ts pins the release and checksum the skill installs
@@ -443,7 +443,7 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.4.4"
+          bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install the copy of Pi the tests load
