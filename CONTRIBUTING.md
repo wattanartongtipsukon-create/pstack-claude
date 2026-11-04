@@ -35,7 +35,7 @@ When a clean merge matches the new upstream text and mode, the sync reports it a
 
 ## Before you open a PR
 
-Install the root dependencies and the copy of Pi the tests load, then run the generator and the tests:
+CI runs the Bun release named in `.bun-version`, and `tests/bun-version.test.mjs` prints a warning when yours differs. Install the root dependencies and the copy of Pi the tests load, then run the generator and the tests:
 
 ```shell
 bun install --frozen-lockfile
