@@ -23,12 +23,35 @@ export function markdownFiles(dir) {
   return walk(dir).filter((path) => path.endsWith(".md"));
 }
 
+// The lines of text outside fenced code blocks, with inline code spans blanked.
+// A link written inside code is an example for the reader, not a link, so the
+// boundary check must not resolve it. A fence closes on a line of at least as
+// many of the same character, per CommonMark; an unclosed fence runs to the end.
+function proseLines(text) {
+  const lines = [];
+  let fence = null;
+  for (const line of text.split(/\r\n|\r|\n/)) {
+    const marker = line.match(/^ {0,3}(`{3,}|~{3,})/)?.[1];
+    if (fence) {
+      if (marker && marker[0] === fence[0] && marker.length >= fence.length && /^ {0,3}[`~]+[ \t]*$/.test(line)) fence = null;
+      lines.push("");
+    } else if (marker && !(marker[0] === "`" && line.slice(line.indexOf(marker) + marker.length).includes("`"))) {
+      fence = marker;
+      lines.push("");
+    } else {
+      lines.push(line.replace(/(`+)(?!`)[^]*?(?<!`)\1(?!`)/g, (span) => " ".repeat(span.length)));
+    }
+  }
+  return lines;
+}
+
 function markdownTargets(text) {
   const targets = [];
+  const lines = proseLines(text);
   // Only an unescaped, outer parenthesis closes the link. Angle destinations
   // and quoted titles can contain parentheses that do not affect its depth.
   // A link never spans lines, so each line is scanned on its own.
-  for (const line of text.split(/\r\n|\r|\n/)) {
+  for (const line of lines) {
     const openings = /\]\([ \t]*/g;
     while (openings.exec(line)) {
       const start = openings.lastIndex;
@@ -55,7 +78,7 @@ function markdownTargets(text) {
       }
     }
   }
-  for (const [, raw] of text.matchAll(/^\s{0,3}\[(?!\^)[^\]\n]+\]:\s*(.+)$/gm)) {
+  for (const [, raw] of lines.join("\n").matchAll(/^\s{0,3}\[(?!\^)[^\]\n]+\]:\s*(.+)$/gm)) {
     targets.push(destination(raw));
   }
   return targets.filter(Boolean);

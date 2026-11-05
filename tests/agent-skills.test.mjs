@@ -140,6 +140,45 @@ describe("shared Agent Skills tree", () => {
     }
   });
 
+  test("links inside fenced code and inline code are examples, not targets", () => {
+    const root = mkdtempSync(join(tmpdir(), "pstack-skills-links-"));
+    const skill = join(root, "example");
+    mkdirSync(skill);
+    writeFileSync(
+      join(skill, "SKILL.md"),
+      [
+        "Write a link like this:",
+        "",
+        "```markdown",
+        "See [the guide](references/guide.md).",
+        "[guide]: references/guide.md",
+        "```",
+        "",
+        "~~~~",
+        "[tilde](tilde.md)",
+        "~~~",
+        "still inside: [deep](deep.md)",
+        "~~~~",
+        "",
+        "Or inline: `[text](other.md)` and ``[two](ticks.md)``.",
+        "",
+        "[after the fences](missing.md)",
+      ].join("\n"),
+    );
+
+    try {
+      let message = "";
+      try {
+        validateSkillsTree(root);
+      } catch (error) {
+        message = error.message;
+      }
+      expect(message.split("\n").slice(1)).toEqual(["example/SKILL.md -> missing.md (missing)"]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   test("bare, dotted, and reference-style local links resolve inside the boundary", () => {
     const root = mkdtempSync(join(tmpdir(), "pstack-skills-links-"));
     const skill = join(root, "example");
