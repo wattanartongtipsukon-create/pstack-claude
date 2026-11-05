@@ -268,6 +268,13 @@ describe("parseSubstitutions", () => {
     expect(() => parseRule({ pattern: "a", replacement: "X" }, 0)).toThrow("needs a rationale");
   });
 
+  test("an invalid regex or files regex fails naming the rule and the source", () => {
+    expect(() => parseRule(rule({ regex: "a(" }), 7)).toThrow('substitutions[7]: regex "a(" is not a valid regex');
+    expect(() => parseRule(rule({ pattern: "a", files: "^skills/[" }), 2)).toThrow(
+      'substitutions[2]: files "^skills/[" is not a valid regex',
+    );
+  });
+
   test("a pattern that contains an earlier rule's pattern fails, since it could never match", () => {
     const generic = rule({ pattern: "`Task`", replacement: "`Agent`" });
     const specific = rule({ pattern: "Spawn `Task` with", replacement: "Spawn an `Agent` with" });

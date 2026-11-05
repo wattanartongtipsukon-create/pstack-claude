@@ -96,10 +96,17 @@ export function parseRule(rule, i) {
   if (typeof replacement !== "string") fail("needs a replacement string");
   if (typeof rationale !== "string" || !rationale) fail("needs a rationale");
   if (files != null && typeof files !== "string") fail("files must be a regex source string");
+  const compile = (field, src, flags) => {
+    try {
+      return new RegExp(src, flags);
+    } catch (error) {
+      fail(`${field} ${JSON.stringify(src)} is not a valid regex: ${error.message}`);
+    }
+  };
   return {
     key: pattern ?? (files ? `${regex} in ${files}` : regex),
-    match: pattern ?? new RegExp(regex, "g"),
-    files: files ? new RegExp(files) : null,
+    match: pattern ?? compile("regex", regex, "g"),
+    files: files ? compile("files", files) : null,
     replacement,
   };
 }
